@@ -1,0 +1,2 @@
+
+KnowledgeBuilder = kbuilder = KnowledgeBuilder.newKnowledgeBuilder();
