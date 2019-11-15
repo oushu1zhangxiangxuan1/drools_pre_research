@@ -34,6 +34,11 @@
 
   <dependencies>
     <dependency>
+        <groupId>org.kie</groupId>
+        <artifactId>kie-internal</artifactId>
+        <version>${runtime.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.kie</groupId>
       <artifactId>kie-api</artifactId>
       <version>${runtime.version}</version>
@@ -61,6 +66,20 @@
     <sourceDirectory>src/main/java</sourceDirectory>
     <testSourceDirectory>src/test/java</testSourceDirectory>
     <plugins>
+        <!-- <plugin>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>maven-bundle-plugin</artifactId>
+            <configuration>
+                <instructions>
+                <Import-Package>
+                    org.drools.core.impl
+                </Import-Package>
+                <Bundle-Activator>org.kie.dmn.core.osgi.Activator</Bundle-Activator>
+                <_removeheaders>Private-Package</_removeheaders>
+                </instructions>
+            </configuration>
+        </plugin>
+                 -->
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>

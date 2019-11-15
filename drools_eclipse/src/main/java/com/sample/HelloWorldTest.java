@@ -5,6 +5,16 @@ import java.lang.reflect.Method;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.internal.builder.KnowledgeBuilder;
+import org.kie.internal.builder.KnowledgeBuilderErrors;
+import org.kie.internal.builder.KnowledgeBuilderError;
+import org.kie.internal.builder.KnowledgeBuilderFactory;
+import org.kie.internal.io.ResourceFactory;
+import org.kie.api.io.ResourceType;
+import org.drools.core.impl.InternalKnowledgeBase;
+// import org.drools.core.impl.KnowledgeBaseFactory;
+import org.kie.api.definition.KiePackage;
+import java.util.Collection;
 
 public class HelloWorldTest{
     public static final void main(String[] args){
@@ -68,6 +78,7 @@ public class HelloWorldTest{
         kieSession.dispose();
     }
     public void Test4(){
+        // multi rule package config
         KieServices kieServices = KieServices.Factory.get();
         KieContainer KieContainer = kieServices.getKieClasspathContainer();
         KieSession kieSession = KieContainer.newKieSession("kession-test4");
@@ -125,4 +136,29 @@ public class HelloWorldTest{
         kieSession.fireAllRules();
         kieSession.dispose();
     }
+
+    // public void Test8(){
+    //     // read drl manually from class path
+    //     KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+    //     kbuilder.add(ResourceFactory.newClassPathResource("com/rules1/r1.drl"), ResourceType.DRL);
+
+    //     KnowledgeBuilderErrors errors = kbuilder.getErrors();
+    //     if(errors.size()>0){
+    //         for(KnowledgeBuilderError error:errors){
+    //             System.err.println(error);
+    //         }
+    //         return;
+    //     }
+
+    //     //drools 7.X
+
+    //     InternalKnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
+    //     Collection<KiePackage> pkgs = kbuilder.getKnowledgePackages();
+    //     kbase.addPackages(pkgs);
+    //     KieSession kieSession = kbase.newKieSession();
+    //     Product fan = new Product("fan", 1);
+    //     kieSession.insert(fan);
+    //     kieSession.fireAllRules();
+    //     kieSession.dispose();
+    // }
 }
