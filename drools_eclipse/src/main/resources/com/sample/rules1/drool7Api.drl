@@ -1,0 +1,37 @@
+// package com.sample.rules
+
+// // import com.drools.model.Car
+// // import com.drools.
+// rule hello
+// when
+// then
+//     System.out.println("Hello the fucking drools!");
+// end
+
+import com.sample.Message
+// import java.lang.String
+
+dialect "mvel"
+
+rule "helloworldDrools"
+    when 
+        eval(true)
+    then    
+        System.out.println("hi Drools I can see you");
+end
+
+
+rule hello2
+    when 
+        m:Message(id=="123", name=="haha")
+    then 
+        System.out.println("=============get fact and rule operate fact================")
+end
+
+rule hello3
+    when 
+        m: Message(id=="456", name=="haha")
+        // s: String("haha")
+    then    
+        System.out.println("==========get fact and then rule operate fact456==========")
+end
