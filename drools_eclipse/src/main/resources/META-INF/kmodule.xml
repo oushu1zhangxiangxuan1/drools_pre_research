@@ -16,7 +16,8 @@
     <kbase name="base2" packages="com.sample.rules1.r1">
         <ksession name="kession-test3"/>
     </kbase>
-    <kbase name="base3" packages="com.sample.rules1,com.sample.rules">
+    <kbase name="base3" packages="com.sample.rules1, com.sample.rules">
+        <!-- must seperate with comma and space -->
         <ksession name="kession-test4"/>
     </kbase>
     <kbase name="base4" packages="com.sample.rules2">

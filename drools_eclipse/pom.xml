@@ -121,3 +121,6 @@
 </build>
 
 </project>
+
+
+<!-- https://docs.jboss.org/drools/release/7.29.0.Final/drools-docs/html_single/index.html#_building_and_running_drools_in_a_fat_jar -->

@@ -12,9 +12,15 @@ import org.kie.internal.builder.KnowledgeBuilderFactory;
 import org.kie.internal.io.ResourceFactory;
 import org.kie.api.io.ResourceType;
 import org.drools.core.impl.InternalKnowledgeBase;
-// import org.drools.core.impl.KnowledgeBaseFactory;
+import org.drools.KnowledgeBaseFactory;
 import org.kie.api.definition.KiePackage;
 import java.util.Collection;
+
+import org.kie.api.builder.KieRepository;
+import org.kie.api.builder.KieFileSystem;
+import org.kie.api.builder.KieBuilder;
+
+import org.kie.api.builder.Message.Level;
 
 public class HelloWorldTest{
     public static final void main(String[] args){
@@ -161,4 +167,31 @@ public class HelloWorldTest{
     //     kieSession.fireAllRules();
     //     kieSession.dispose();
     // }
+
+    public void Test9(){
+        // read drl manually from class path trial 2
+        KieServices ks = KieServices.Factory.get();
+        KieRepository kr = ks.getRepository();
+        KieFileSystem kfs = ks.newKieFileSystem();
+
+        String drlStr = "rule hello4 when then System.out.println(\"=============hello4================\"); end";
+    
+
+        kfs.write("src/main/resources/com/sample/rules9/r2.drl", drlStr);
+        KieBuilder kb = ks.newKieBuilder(kfs);
+
+        kb.buildAll();
+        if(kb.getResults().hasMessages(Level.ERROR)){
+            System.out.println("Failed to build rules: "+kb.getResults().toString());
+            return;
+        }
+
+        KieContainer kContainer = ks.newKieContainer(kr.getDefaultReleaseId());
+
+        KieSession kieSession = kContainer.newKieSession();
+        Product fan = new Product("fan", 1);
+        kieSession.insert(fan);
+        kieSession.fireAllRules();
+        kieSession.dispose();
+    }
 }
