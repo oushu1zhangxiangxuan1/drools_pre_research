@@ -19,4 +19,7 @@
     <kbase name="base3" packages="com.sample.rules1,com.sample.rules">
         <ksession name="kession-test4"/>
     </kbase>
+    <kbase name="base4" packages="com.sample.rules2">
+        <ksession name="kession-test5"/>
+    </kbase>
 </kmodule>

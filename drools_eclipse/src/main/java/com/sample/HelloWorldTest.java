@@ -1,15 +1,25 @@
 package com.sample;
 
+import java.lang.reflect.Method;
+
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
 public class HelloWorldTest{
     public static final void main(String[] args){
-        HelloWorldTest hello = new HelloWorldTest();
-        // hello.Test1();
-        // hello.Test2();
-        hello.Test3();
+        try{
+            HelloWorldTest hello = new HelloWorldTest();
+            // hello.Test1();
+            // hello.Test2();
+            // hello.Test3();
+            // hello.Test4();
+            // hello.Test5();
+            Method m = hello.getClass().getMethod("Test"+args[0]);
+            m.invoke(hello);
+        }catch(Throwable t){
+            t.printStackTrace();
+        }
     }
 
     public void Test1(){
@@ -69,6 +79,18 @@ public class HelloWorldTest{
 
         int i = kieSession.fireAllRules();
         System.out.println("=========="+i);
+        kieSession.dispose();
+    }
+    public void Test5(){
+        KieServices kieServices = KieServices.Factory.get();
+        KieContainer kieContainer = kieServices.getKieClasspathContainer();
+        KieSession kieSession = kieContainer.newKieSession("kession-test5");
+
+        Message1 msg = new Message1();
+        msg.setMessage("Hello world!");
+        msg.setStatus(Message1.HELLO);
+        kieSession.insert(msg);
+        kieSession.fireAllRules();
         kieSession.dispose();
     }
 }
