@@ -107,4 +107,22 @@ public class HelloWorldTest{
         kieSession.fireAllRules();
         kieSession.dispose();
     }
+
+    public void Test7(){
+        // merchandise valuation
+        KieServices kieServices = KieServices.Factory.get();
+        KieContainer kieContainer = kieServices.getKieClasspathContainer();
+        KieSession kieSession = kieContainer.newKieSession("kession-test7");
+
+        Product fan= new Product("Fan", 280);
+        Product washer = new Product("Washer", 2200);
+        Product phone = new Product("Phone", 998);
+
+        kieSession.insert(fan);
+        kieSession.insert(washer);
+        kieSession.insert(phone);
+        
+        kieSession.fireAllRules();
+        kieSession.dispose();
+    }
 }
