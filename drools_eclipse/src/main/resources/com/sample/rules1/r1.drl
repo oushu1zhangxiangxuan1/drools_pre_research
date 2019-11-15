@@ -43,3 +43,11 @@ rule hello6
     then    
         System.out.println("====hello6==========")
 end
+
+
+rule hello7
+    when 
+        Message()
+    then    
+        System.out.println("====hello7==========")
+end

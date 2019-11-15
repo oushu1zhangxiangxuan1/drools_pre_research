@@ -93,4 +93,18 @@ public class HelloWorldTest{
         kieSession.fireAllRules();
         kieSession.dispose();
     }
+
+    public void Test6(){
+        //Wrong data insert into session
+        KieServices kieServices = KieServices.Factory.get();
+        KieContainer kieContainer = kieServices.getKieClasspathContainer();
+        KieSession kieSession = kieContainer.newKieSession("kession-test2");
+
+        Message1 msg = new Message1();
+        msg.setMessage("Hello world!");
+        msg.setStatus(Message1.HELLO);
+        kieSession.insert(msg);
+        kieSession.fireAllRules();
+        kieSession.dispose();
+    }
 }
