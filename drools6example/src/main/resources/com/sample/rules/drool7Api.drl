@@ -1,0 +1,9 @@
+package com.sample.rules
+
+// import com.drools.model.Car
+// import com.drools.
+rule hello
+when
+then
+    System.out.println("Hello the fucking drools!");
+end
