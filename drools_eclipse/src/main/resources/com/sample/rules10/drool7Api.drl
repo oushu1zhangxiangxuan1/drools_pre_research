@@ -1,0 +1,25 @@
+package com.sample.rules10
+
+import java.util.Date;
+
+declare Person
+    name:String
+    dateOfBirth:Date 
+    address:Address 
+end 
+
+rule hello
+    when 
+        Person(name:name)
+    then
+        System.out.println("Hello "+name);
+end
+
+rule grow
+    when 
+        p:Person()
+    then
+        System.out.println("Grow "+p.getName());
+        p.setAge(p.getAge()+1);
+end
+

@@ -12,8 +12,13 @@ import org.kie.internal.builder.KnowledgeBuilderFactory;
 import org.kie.internal.io.ResourceFactory;
 import org.kie.api.io.ResourceType;
 import org.drools.core.impl.InternalKnowledgeBase;
-import org.drools.KnowledgeBaseFactory;
-import org.kie.api.definition.KiePackage;
+// import org.drools.KnowledgeBaseFactory;
+// import org.drools.KnowledgeBase;
+// import org.kie.internal.KnowledgeBaseFactory;
+// import org.kie.internal.KnowledgeBase;
+import org.drools.definition.type.FactType;
+// import org.kie.api.definition.type.FactType;
+// import org.kie.api.definition.KiePackage;
 import java.util.Collection;
 
 import org.kie.api.builder.KieRepository;
@@ -193,5 +198,59 @@ public class HelloWorldTest{
         kieSession.insert(fan);
         kieSession.fireAllRules();
         kieSession.dispose();
+    }
+
+    // public void Test10(){
+    //     //type declaration in drl file
+    //     try{
+
+    //         KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
+    //         FactType personType = kbase.getFactType("com.sample.rules10", "Person");
+            
+    //         Object bob = personType.newInstance();
+    //         personType.set(bob, "name", "Bob");
+    //         personType.set(bob, "age", 43);
+
+
+    //         KieServices kieServices = KieServices.Factory.get();
+    //         KieContainer kieContainer = kieServices.getKieClasspathContainer();
+    //         KieSession kieSession = kieContainer.newKieSession("kession-test10");
+
+    //         kieSession.insert(bob);
+    //         kieSession.fireAllRules();
+    //         String name = personType.get(bob,"name").toString();
+    //         int age=Integer.parseInt(personType.get(bob, "age").toString());
+    //         System.out.println("name: "+name);
+    //         System.out.println("age: "+age);
+    //         kieSession.dispose();
+    //     }catch(Throwable t){
+    //         t.printStackTrace();
+    //     }
+    // }
+
+    public void Test11(){
+        //type declaration in drl file
+        try{
+            KieServices kieServices = KieServices.Factory.get();
+            KieContainer kieContainer = kieServices.getKieClasspathContainer();
+            KieSession kieSession = kieContainer.newKieSession("kession-test11");
+
+            FactType personType = (FactType)kieSession.getKieBase().getFactType("com.sample.rules11", "Person");
+
+            Object bob = personType.newInstance();
+            personType.set(bob, "name", "Bob");
+            personType.set(bob, "age", 43);
+
+
+            kieSession.insert(bob);
+            kieSession.fireAllRules();
+            String name = personType.get(bob,"name").toString();
+            int age=Integer.parseInt(personType.get(bob, "age").toString());
+            System.out.println("name: "+name);
+            System.out.println("age: "+age);
+            kieSession.dispose();
+        }catch(Throwable t){
+            t.printStackTrace();
+        }
     }
 }

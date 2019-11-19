@@ -13,12 +13,16 @@ import org.kie.internal.io.ResourceFactory;
 import org.kie.api.io.ResourceType;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
+// import org.drools.KnowledgeBuilderFactory;
 import org.kie.api.definition.KiePackage;
 import java.util.Collection;
+
+import org.drools.definition.type.FactType;
 
 import org.kie.api.builder.KieRepository;
 import org.kie.api.builder.KieFileSystem;
 import org.kie.api.builder.KieBuilder;
+import org.drools.definition.KnowledgePackage;
 
 import org.kie.api.builder.Message.Level;
 
@@ -143,35 +147,35 @@ public class HelloWorldTest{
         kieSession.dispose();
     }
 
-    public void Test8(){
-        // read drl manually from class path
-        KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-        kbuilder.add(ResourceFactory.newClassPathResource("com/rules1/r1.drl"), ResourceType.DRL);
+    // public void Test8(){
+    //     // read drl manually from class path
+    //     KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+    //     kbuilder.add(ResourceFactory.newClassPathResource("com/rules1/r1.drl"), ResourceType.DRL);
 
-        KnowledgeBuilderErrors errors = kbuilder.getErrors();
-        if(errors.size()>0){
-            for(KnowledgeBuilderError error:errors){
-                System.err.println(error);
-            }
-            return;
-        }
+    //     KnowledgeBuilderErrors errors = kbuilder.getErrors();
+    //     if(errors.size()>0){
+    //         for(KnowledgeBuilderError error:errors){
+    //             System.err.println(error);
+    //         }
+    //         return;
+    //     }
 
-        //drools 7.X
-        // KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
-        // // Collection<KiePackage> pkgs = kbuilder.getKnowledgePackages();
-        // kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-        // KieSession kieSession = kbase.newKieSession();
+    //     //drools 7.X
+    //     // KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
+    //     // // Collection<KiePackage> pkgs = kbuilder.getKnowledgePackages();
+    //     // kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
+    //     // KieSession kieSession = kbase.newKieSession();
 
-        //drools 6.X
-        KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
-        kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-        StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
+    //     //drools 6.X
+    //     KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
+    //     kbase.addKnowledgePackages((Collection<KnowledgePackage>)kbuilder.getKnowledgePackages());
+    //     StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
 
-        Product fan = new Product("fan", 1);
-        kieSession.insert(fan);
-        kieSession.fireAllRules();
-        kieSession.dispose();
-    }
+    //     Product fan = new Product("fan", 1);
+    //     kieSession.insert(fan);
+    //     kieSession.fireAllRules();
+    //     kieSession.dispose();
+    // }
 
     public void Test9(){
         // read drl manually from class path trial 2
@@ -198,5 +202,60 @@ public class HelloWorldTest{
         kieSession.insert(fan);
         kieSession.fireAllRules();
         kieSession.dispose();
+    }
+
+
+    public void Test10(){
+        //type declaration in drl file
+        try{
+
+            KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
+            FactType personType = kbase.getFactType("com.sample.rules10", "Person");
+            
+            Object bob = personType.newInstance();
+            personType.set(bob, "name", "Bob");
+            personType.set(bob, "age", 43);
+
+
+            KieServices kieServices = KieServices.Factory.get();
+            KieContainer kieContainer = kieServices.getKieClasspathContainer();
+            KieSession kieSession = kieContainer.newKieSession("kession-test10");
+
+            kieSession.insert(bob);
+            kieSession.fireAllRules();
+            String name = personType.get(bob,"name").toString();
+            int age=Integer.parseInt(personType.get(bob, "age").toString());
+            System.out.println("name: "+name);
+            System.out.println("age: "+age);
+            kieSession.dispose();
+        }catch(Throwable t){
+            t.printStackTrace();
+        }
+    }
+
+    public void Test11(){
+        //type declaration in drl file
+        try{
+            KieServices kieServices = KieServices.Factory.get();
+            KieContainer kieContainer = kieServices.getKieClasspathContainer();
+            KieSession kieSession = kieContainer.newKieSession("kession-test11");
+
+            FactType personType = (FactType)kieSession.getKieBase().getFactType("com.sample.rules11", "Person");
+
+            Object bob = personType.newInstance();
+            personType.set(bob, "name", "Bob");
+            personType.set(bob, "age", 43);
+
+
+            kieSession.insert(bob);
+            kieSession.fireAllRules();
+            String name = personType.get(bob,"name").toString();
+            int age=Integer.parseInt(personType.get(bob, "age").toString());
+            System.out.println("name: "+name);
+            System.out.println("age: "+age);
+            kieSession.dispose();
+        }catch(Throwable t){
+            t.printStackTrace();
+        }
     }
 }
