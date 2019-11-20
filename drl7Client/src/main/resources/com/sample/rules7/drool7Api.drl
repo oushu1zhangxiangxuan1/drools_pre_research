@@ -1,0 +1,29 @@
+package com.sample.rules7
+
+import com.sample.Product;
+
+rule "Product price less than 500"
+when
+    pp:Product(prePrice<=500)
+then
+    double prePrice = pp.getPrePrice();
+    pp.setRealPrice(prePrice*0.85);
+    System.out.println(pp.getName()+"sale price: "+pp.getRealPrice());
+end
+
+rule "Product price less than 1000"
+when 
+    p:Product(prePrice>500&&prePrice<=1000)
+then 
+    double prePrice = p.getPrePrice();
+    p.setRealPrice(prePrice*0.8);
+    System.out.println(p.getName()+"sale price: "+p.getRealPrice());
+end
+
+rule "Product price more than 1000"
+when p:Product(prePrice>1000)
+then    
+    double prePrice=p.getPrePrice();
+    p.setRealPrice(prePrice-300);
+    System.out.println(p.getName()+"sale price: "+p.getRealPrice());
+end

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.sample</groupId>
+  <artifactId>drools_eclipse</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <name>Drools :: Sample Maven Project</name>
+  <description>A sample Drools Maven project</description>
+
+  <properties>
+    <!-- <runtime.version>7.0.0.Final</runtime.version> -->
+    <runtime.version>7.29.0.Final</runtime.version>
+    <!-- <runtime.version>7.1.0.Final</runtime.version> -->
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Repository Group</name>
+      <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <!-- <dependency>
+        <groupId>org.kie</groupId>
+        <artifactId>kie-server</artifactId>
+        <version>6.2.0.Final</version>
+    </dependency> -->
+    <dependency>
+        <groupId>org.kie.server</groupId>
+        <artifactId>kie-server-client</artifactId>
+        <!-- <version>6.2.0.Final</version> -->
+        <version>${runtime.version}</version>
+    </dependency>
+    <dependency>
+            <groupId>org.kie.server</groupId>
+            <artifactId>kie-server-api</artifactId>
+            <!-- <version>6.3.0.Final-redhat-5</version> -->
+            <version>${runtime.version}</version>
+    </dependency>
+    <!-- <dependency>
+            <groupId>org.kie</groupId>
+            <artifactId>kie-remote</artifactId>
+            <version>6.2.0.Final</version>
+            <version>${runtime.version}</version>
+    </dependency> -->
+    <dependency>
+        <groupId>org.kie</groupId>
+        <artifactId>kie-internal</artifactId>
+        <version>${runtime.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.kie</groupId>
+      <artifactId>kie-api</artifactId>
+      <version>${runtime.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-core</artifactId>
+      <version>${runtime.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.drools</groupId>
+        <artifactId>drools-compiler</artifactId>
+        <version>${runtime.version}</version>
+      </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-decisiontables</artifactId>
+      <version>${runtime.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.drools</groupId>
+        <artifactId>knowledge-api</artifactId>
+        <version>7.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jbpm</groupId>
+      <artifactId>jbpm-test</artifactId>
+      <version>${runtime.version}</version>
+    </dependency>
+  </dependencies>
+
+
+  <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <plugins>
+        <!-- <plugin>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>maven-bundle-plugin</artifactId>
+            <configuration>
+                <instructions>
+                <Import-Package>
+                    org.drools.core.impl
+                </Import-Package>
+                <Bundle-Activator>org.kie.dmn.core.osgi.Activator</Bundle-Activator>
+                <_removeheaders>Private-Package</_removeheaders>
+                </instructions>
+            </configuration>
+        </plugin>
+                 -->
+        <!-- <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.1.0</version>
+            <configuration>
+                <transformers>
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                        <resource>META-INF/kie.conf</resource>
+                    </transformer>
+                </transformers>
+            </configuration>
+        </plugin> -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.6.1</version>
+            <configuration>
+                <source>1.8</source>
+                <target>1.8</target>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <!-- <artifactId>maven-assembly-plugin</artifactId> -->
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>2.4.1</version>
+            <configuration>
+                <!-- get all project dependencies -->
+                <descriptorRefs>
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+                <!-- MainClass in mainfest make a executable jar -->
+                <archive>
+                    <manifest>
+                        <mainClass>com.sample.DroolsClient</mainClass>
+                    </manifest>
+                </archive>
+
+            </configuration>
+            <executions>
+                <execution>
+                    <!-- <id>make-assembly</id> -->
+                    <!-- bind to the packaging phase -->
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                    <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/kie.conf</resource>
+                                </transformer>
+                            </transformers>
+                    </configuration>   
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+
+</project>
+
+
+<!-- https://docs.jboss.org/drools/release/7.29.0.Final/drools-docs/html_single/index.html#_building_and_running_drools_in_a_fat_jar -->

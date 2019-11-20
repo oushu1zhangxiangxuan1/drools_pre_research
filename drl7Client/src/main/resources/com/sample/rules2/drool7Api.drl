@@ -1,0 +1,20 @@
+package com.sample.rules2
+
+import com.sample.Message1
+
+rule "Hello World"
+    when 
+        m:Message1(status==Message1.HELLO, printMsg:message)
+    then
+        System.out.println(printMsg);
+        m.setMessage("Goodbye~");
+        m.setStatus(Message1.GOODBYE);
+        update(m);
+end
+
+rule GOODBYE
+    when 
+        Message1(status==Message1.GOODBYE, printMsg:message)
+    then  
+        System.out.println(printMsg);
+end
