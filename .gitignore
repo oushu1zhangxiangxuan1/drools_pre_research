@@ -38,3 +38,5 @@ dependency/*
 
 #
 target/
+
+.idea
