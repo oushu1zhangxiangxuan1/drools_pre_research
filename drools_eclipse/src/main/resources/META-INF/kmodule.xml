@@ -29,4 +29,10 @@
     <kbase name="base10" packages="com.sample.rules10">
         <ksession name="kession-test10"/>
     </kbase>
+    <kbase name="base11" packages="com.sample.rules11">
+        <ksession name="kession-test11"/>
+    </kbase>
+    <kbase name="base12" packages="com.sample.rules12">
+        <ksession name="kession-test12"/>
+    </kbase>
 </kmodule>

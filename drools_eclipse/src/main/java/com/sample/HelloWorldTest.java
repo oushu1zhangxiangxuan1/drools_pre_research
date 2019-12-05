@@ -20,6 +20,10 @@ import org.drools.definition.type.FactType;
 // import org.kie.api.definition.type.FactType;
 // import org.kie.api.definition.KiePackage;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.alibaba.fastjson.JSONObject;
 
 import org.kie.api.builder.KieRepository;
 import org.kie.api.builder.KieFileSystem;
@@ -248,6 +252,71 @@ public class HelloWorldTest{
             int age=Integer.parseInt(personType.get(bob, "age").toString());
             System.out.println("name: "+name);
             System.out.println("age: "+age);
+            kieSession.dispose();
+        }catch(Throwable t){
+            t.printStackTrace();
+        }
+    }
+
+    public void Test12(){
+        //type declaration in drl file
+        try{
+            KieServices kieServices = KieServices.Factory.get();
+            KieContainer kieContainer = kieServices.getKieClasspathContainer();
+            KieSession kieSession = kieContainer.newKieSession("kession-test12");
+
+
+
+
+
+            Person p1 = new Person(1, "p1");
+
+            Person p2 = new Person(2, "p2");
+
+
+            Map bob = new HashMap<>();
+
+            bob.put("name", "Bob");
+            bob.put("age",12);
+
+            kieSession.insert(bob);
+
+
+
+            JSONObject obj = new JSONObject();
+            obj.put("name", "John");
+            obj.put("age",22);
+            kieSession.insert(obj);
+
+
+            kieSession.insert(p1);
+            kieSession.insert(p2);
+            Map bob1 = new HashMap<>();
+
+            bob1.put("name", "Bob1");
+            bob1.put("age",12);
+
+            kieSession.insert(bob1);
+
+            kieSession.fireAllRules();
+            System.out.println(1);
+            kieSession.fireAllRules();
+            System.out.println(2);
+
+            JSONObject obj1 = new JSONObject();
+            obj1.put("name", "Saxon");
+            obj1.put("age",22);
+
+            Person p3 = new Person(3, "p3");
+            kieSession.insert(obj1);
+            kieSession.insert(p3);
+            kieSession.fireAllRules();
+            System.out.println(3);
+
+//            String name = personType.get(bob,"name").toString();
+//            int age=Integer.parseInt(personType.get(bob, "age").toString());
+//            System.out.println("name: "+name);
+//            System.out.println("age: "+age);
             kieSession.dispose();
         }catch(Throwable t){
             t.printStackTrace();

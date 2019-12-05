@@ -1,11 +1,18 @@
-package com.sample.rules11
+package com.sample.rules12
 
 import java.util.Date;
+import com.sample.Person;
 
-declare Person
-    name:String
-    age:Integer
-end 
+//declare Person
+//    name:String
+//    age:Integer
+//end
+
+rule Entry
+    when
+    then
+        System.out.println("Entry!");
+end
 
 rule hello
     when 
