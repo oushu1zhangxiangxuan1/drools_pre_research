@@ -2,6 +2,7 @@ package com.sample;
 
 import java.lang.reflect.Method;
 
+import org.kie.api.runtime.rule.FactHandle;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -259,7 +260,7 @@ public class HelloWorldTest{
     }
 
     public void Test12(){
-        //type declaration in drl file
+        // test insert json and map
         try{
             KieServices kieServices = KieServices.Factory.get();
             KieContainer kieContainer = kieServices.getKieClasspathContainer();
@@ -318,6 +319,64 @@ public class HelloWorldTest{
 //            System.out.println("name: "+name);
 //            System.out.println("age: "+age);
             kieSession.dispose();
+        }catch(Throwable t){
+            t.printStackTrace();
+        }
+    }
+
+    public void Test13(){
+        // fireUntilHalt and get result through global var
+
+        //but Entry only match once !? and the first insert p1 not triggered.
+        //        Entry!
+        //        Hello p2
+        //        Grow p2 to 2
+        //        Hello p1
+        //        Grow p1 to 1
+        //        Hello p2
+        //        Grow p2 to 2
+        //        Hello p1
+        //        Grow p1 to 1
+        //        Hello p2
+        //        Grow p2 to 2
+        //        Hello p1
+        //        Grow p1 to 1
+        //        Hello p2
+        //        Grow p2 to 2
+        //        Hello p1
+        //        Grow p1 to 1
+
+        try{
+            KieServices kieServices = KieServices.Factory.get();
+            KieContainer kieContainer = kieServices.getKieClasspathContainer();
+            KieSession kieSession = kieContainer.newKieSession("kession-test13");
+
+
+            Person p1 = new Person(1, "p1");
+
+            Person p2 = new Person(2, "p2");
+
+            new Thread(new Runnable() {
+//                @Override
+                public void run() {
+                    kieSession.fireUntilHalt();
+                }
+            }).start();
+
+            FactHandle serverHandle = kieSession.insert(p1);
+
+            for (int i=8;i<=15;i++){
+                if (i%2 == 0){
+                    kieSession.update(serverHandle, p2);
+                }else{
+                    kieSession.update(serverHandle, p1);
+                }
+                Thread.sleep(1000);
+            }
+
+            Thread.sleep(1000);
+            kieSession.halt();
+
         }catch(Throwable t){
             t.printStackTrace();
         }

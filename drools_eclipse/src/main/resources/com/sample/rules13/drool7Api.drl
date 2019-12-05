@@ -1,0 +1,31 @@
+package com.sample.rules13
+
+import java.util.Date;
+import com.sample.Person;
+
+//declare Person
+//    name:String
+//    age:Integer
+//end
+
+rule Entry
+    when
+    then
+        System.out.println("Entry!");
+end
+
+rule hello
+    when 
+        Person(name:name)
+    then
+        System.out.println("Hello "+name);
+end
+
+rule grow
+    when 
+        p:Person()
+    then
+        p.setAge(p.getAge()+1);
+        System.out.println("Grow "+p.getName()+" to "+p.getAge());
+end
+
