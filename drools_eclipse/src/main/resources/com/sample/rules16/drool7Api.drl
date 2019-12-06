@@ -1,0 +1,39 @@
+package com.sample.rules16
+
+import java.util.Date;
+import com.sample.Person;
+
+
+global com.sample.ResultEvent event
+
+rule Entry
+    when
+    then
+        System.out.println("Entry!");
+end
+
+rule header
+    when
+    then
+        System.out.println("header!");
+end
+
+rule hello
+    when 
+        Person(name:name)
+    then
+        System.out.println("Hello "+name);
+end
+
+rule grow
+    when 
+        p:Person()
+    then
+        p.setAge(p.getAge()+1);
+        System.out.println("Grow "+p.getName()+" to "+p.getAge());
+        System.out.println(new java.util.Date());
+        System.out.println(p.getName());
+        System.out.println(drools.getRule().getName());
+        event.events.add(new java.util.Date() + " - " + p.getName()+ " matches rule : " + drools.getRule().getName());
+end
+

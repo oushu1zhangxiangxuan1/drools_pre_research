@@ -439,4 +439,38 @@ public class HelloWorldTest{
             t.printStackTrace();
         }
     }
+
+    public void Test16(){
+        // fireUntilHalt and get result from global
+
+        try{
+            KieServices kieServices = KieServices.Factory.get();
+            KieContainer kieContainer = kieServices.getKieClasspathContainer();
+            KieSession kieSession = kieContainer.newKieSession("kession-test16");
+
+
+            ResultEvent event = new ResultEvent();
+            kieSession.setGlobal("event", event);
+
+
+            new Thread(new Runnable() {
+                // @Override
+                public void run() {
+                    kieSession.fireUntilHalt();
+                }
+            }).start();
+
+            for (Integer i=0;i<5;i++){
+                kieSession.insert(new Person(i, "p"+i.toString()));
+                System.out.println(event.events);
+                Thread.sleep(1000);
+            }
+
+            Thread.sleep(1000);
+            kieSession.halt();
+
+        }catch(Throwable t){
+            t.printStackTrace();
+        }
+    }
 }
