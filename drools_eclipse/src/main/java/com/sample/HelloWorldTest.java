@@ -325,7 +325,7 @@ public class HelloWorldTest{
     }
 
     public void Test13(){
-        // fireUntilHalt and get result through global var
+        // fireUntilHalt
 
         //but Entry only match once !? and the first insert p1 not triggered.
         //        Entry!
@@ -371,6 +371,64 @@ public class HelloWorldTest{
                 }else{
                     kieSession.update(serverHandle, p1);
                 }
+                Thread.sleep(1000);
+            }
+
+            Thread.sleep(1000);
+            kieSession.halt();
+
+        }catch(Throwable t){
+            t.printStackTrace();
+        }
+    }
+
+    public void Test14(){
+        // fireUntilHalt insert
+
+        try{
+            KieServices kieServices = KieServices.Factory.get();
+            KieContainer kieContainer = kieServices.getKieClasspathContainer();
+            KieSession kieSession = kieContainer.newKieSession("kession-test13");
+
+
+            new Thread(new Runnable() {
+                // @Override
+                public void run() {
+                    kieSession.fireUntilHalt();
+                }
+            }).start();
+
+            for (Integer i=0;i<5;i++){
+                kieSession.insert(new Person(i, "p"+i.toString()));
+                Thread.sleep(1000);
+            }
+
+            Thread.sleep(1000);
+            kieSession.halt();
+
+        }catch(Throwable t){
+            t.printStackTrace();
+        }
+    }
+
+    public void Test15(){
+        // fireUntilHalt and get result from global
+
+        try{
+            KieServices kieServices = KieServices.Factory.get();
+            KieContainer kieContainer = kieServices.getKieClasspathContainer();
+            KieSession kieSession = kieContainer.newKieSession("kession-test15");
+
+
+            new Thread(new Runnable() {
+                // @Override
+                public void run() {
+                    kieSession.fireUntilHalt();
+                }
+            }).start();
+
+            for (Integer i=0;i<5;i++){
+                kieSession.insert(new Person(i, "p"+i.toString()));
                 Thread.sleep(1000);
             }
 
